@@ -2,11 +2,11 @@
 
 
           
-# Email Faker Backend
+# Email Faker
 
 ## Descripción
 
-Email Faker Backend es un servicio API que permite crear y gestionar emails temporales verificados. Utiliza [Mail.tm](https://mail.tm) como proveedor de emails temporales y [Disify](https://www.disify.com) para verificar la validez de los emails generados.
+Email Faker es un servicio API que permite crear y gestionar emails temporales verificados. Utiliza [Mail.tm](https://mail.tm) como proveedor de emails temporales y [Disify](https://www.disify.com) para verificar la validez de los emails generados.
 
 ## Características
 
