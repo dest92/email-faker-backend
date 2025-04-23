@@ -1,9 +1,9 @@
-import { Request, Response, NextFunction } from 'express';
-import mailService from '../services/mail.service';
-import disifyService from '../services/disify.service';
-import fakerService from '../services/faker.service';
-import { VerifiedEmail } from '../interfaces/mail.interface';
-import { ApiError } from '../interfaces/error.interface';
+import { Request, Response, NextFunction } from "express";
+import mailService from "../services/mail.service";
+import disifyService from "../services/disify.service";
+import fakerService from "../services/faker.service";
+import { VerifiedEmail } from "../interfaces/mail.interface";
+import { ApiError } from "../interfaces/error.interface";
 
 /**
  * @swagger
@@ -24,17 +24,21 @@ import { ApiError } from '../interfaces/error.interface';
  *             schema:
  *               $ref: '#/components/schemas/Error'
  */
-export const createVerifiedEmail = async (req: Request, res: Response, next: NextFunction) => {
+export const createVerifiedEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // Obtener dominios disponibles
     const domains = await mailService.getDomains();
     if (!domains.length) {
-      const error: ApiError = new Error('No hay dominios disponibles');
+      const error: ApiError = new Error("No hay dominios disponibles");
       error.statusCode = 503;
       throw error;
     }
 
-    console.log('Dominios disponibles:', domains);
+    console.log("Dominios disponibles:", domains);
 
     // Intentar crear cuentas hasta encontrar una válida
     let verifiedEmail: VerifiedEmail | null = null;
@@ -44,11 +48,11 @@ export const createVerifiedEmail = async (req: Request, res: Response, next: Nex
 
     while (!verifiedEmail && attempts < maxAttempts) {
       attempts++;
-      
+
       // Seleccionar un dominio aleatorio en lugar del primero
       const randomIndex = Math.floor(Math.random() * domains.length);
       const domain = domains[randomIndex].domain;
-      
+
       // Generar credenciales aleatorias
       const username = mailService.generateRandomUsername();
       const password = mailService.generateRandomPassword();
@@ -57,34 +61,40 @@ export const createVerifiedEmail = async (req: Request, res: Response, next: Nex
       try {
         // Verificar el email con Disify antes de crearlo
         const disifyResult = await disifyService.verifyEmail(email);
-        
+
         // Crear la cuenta independientemente del resultado de la verificación
-        const account = await mailService.createAccount(username, domain, password);
+        const account = await mailService.createAccount(
+          username,
+          domain,
+          password
+        );
         const authToken = await mailService.getToken(email, password);
-        
+
         // Guardar la información del último email generado
         lastGeneratedEmail = {
           email: account.address,
           password: password,
           token: authToken.token,
-          isVerified: disifyService.isEmailValid(disifyResult)
+          isVerified: disifyService.isEmailValid(disifyResult),
         };
-        
+
         // Si el email es válido según Disify, lo marcamos como verificado
         if (disifyService.isEmailValid(disifyResult)) {
           verifiedEmail = lastGeneratedEmail;
         }
       } catch (error) {
-        console.error('Error al procesar email:', error);
+        console.error("Error al procesar email:", error);
         // Continuar con el siguiente intento
       }
     }
 
     // Si no se pudo verificar ningún email pero tenemos uno generado, lo devolvemos igualmente
     const emailToReturn = verifiedEmail || lastGeneratedEmail;
-    
+
     if (!emailToReturn) {
-      const error: ApiError = new Error('No se pudo crear un email después de varios intentos');
+      const error: ApiError = new Error(
+        "No se pudo crear un email después de varios intentos"
+      );
       error.statusCode = 500;
       throw error;
     }
@@ -92,13 +102,13 @@ export const createVerifiedEmail = async (req: Request, res: Response, next: Nex
     // Generar perfil de usuario aleatorio
     const userProfile = fakerService.generateUserProfile();
 
+    // Simplificar la lista de dominios para la respuesta
+
     // Devolver la respuesta con el email generado, indicando si fue verificado o no
     res.status(201).json({
       disposableDetected: !verifiedEmail, // true si no se verificó (es desechable), false si se verificó
       data: emailToReturn,
       userProfile: userProfile,
-      domains: domains,
-      attempts: attempts
     });
   } catch (error) {
     next(error);
