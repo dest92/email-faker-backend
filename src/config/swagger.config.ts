@@ -225,6 +225,76 @@ const swaggerDefinition = {
       }
     },
     responses: {
+      UserProfile: {
+        type: 'object',
+        properties: {
+          firstName: {
+            type: 'string',
+            description: 'Nombre de la persona'
+          },
+          lastName: {
+            type: 'string',
+            description: 'Apellido de la persona'
+          },
+          fullName: {
+            type: 'string',
+            description: 'Nombre completo'
+          },
+          gender: {
+            type: 'string',
+            description: 'Género'
+          },
+          age: {
+            type: 'number',
+            description: 'Edad'
+          },
+          birthdate: {
+            type: 'string',
+            description: 'Fecha de nacimiento'
+          },
+          avatar: {
+            type: 'string',
+            description: 'URL del avatar'
+          },
+          address: {
+            type: 'object',
+            properties: {
+              street: {
+                type: 'string',
+                description: 'Dirección'
+              },
+              city: {
+                type: 'string',
+                description: 'Ciudad'
+              },
+              state: {
+                type: 'string',
+                description: 'Estado o provincia'
+              },
+              zipCode: {
+                type: 'string',
+                description: 'Código postal'
+              },
+              country: {
+                type: 'string',
+                description: 'País'
+              }
+            }
+          },
+          phone: {
+            type: 'string',
+            description: 'Número de teléfono'
+          },
+          occupation: {
+            type: 'string',
+            description: 'Ocupación o profesión'
+          },
+          company: {
+            type: 'string',
+            description: 'Empresa'
+          }
+        }
+      },
       SuccessResponse: {
         description: 'Operación exitosa',
         content: {
@@ -232,12 +302,27 @@ const swaggerDefinition = {
             schema: {
               type: 'object',
               properties: {
-                success: {
+                disposableDetected: {
                   type: 'boolean',
-                  example: true
+                  example: false,
+                  description: 'Indica si se detectó que el email es desechable'
                 },
                 data: {
                   $ref: '#/components/schemas/VerifiedEmail'
+                },
+                userProfile: {
+                  $ref: '#/components/schemas/UserProfile'
+                },
+                domains: {
+                  type: 'array',
+                  items: {
+                    $ref: '#/components/schemas/Domain'
+                  }
+                },
+                attempts: {
+                  type: 'number',
+                  example: 1,
+                  description: 'Número de intentos realizados'
                 }
               }
             }

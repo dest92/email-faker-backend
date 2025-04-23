@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import mailService from '../services/mail.service';
 import disifyService from '../services/disify.service';
+import fakerService from '../services/faker.service';
 import { VerifiedEmail } from '../interfaces/mail.interface';
 import { ApiError } from '../interfaces/error.interface';
 
@@ -88,12 +89,16 @@ export const createVerifiedEmail = async (req: Request, res: Response, next: Nex
       throw error;
     }
 
+    // Generar perfil de usuario aleatorio
+    const userProfile = fakerService.generateUserProfile();
+
     // Devolver la respuesta con el email generado, indicando si fue verificado o no
     res.status(201).json({
-      success: !!verifiedEmail, // true si se verificó, false si no
+      disposableDetected: !verifiedEmail, // true si no se verificó (es desechable), false si se verificó
       data: emailToReturn,
-      domains: domains, // Incluir la lista de dominios disponibles
-      attempts: attempts // Incluir el número de intentos realizados
+      userProfile: userProfile,
+      domains: domains,
+      attempts: attempts
     });
   } catch (error) {
     next(error);

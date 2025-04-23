@@ -30,6 +30,33 @@ export interface VerifiedEmail {
   isVerified: boolean;
 }
 
+export interface UserProfile {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  gender: string;
+  age: number;
+  birthdate: string;
+  avatar: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  phone: string;
+  occupation: string;
+  company: string;
+}
+
+export interface EmailResponse {
+  disposableDetected: boolean;
+  data: VerifiedEmail;
+  userProfile: UserProfile;
+  domains: Domain[];
+  attempts: number;
+}
 
 export interface Message {
   id: string;
