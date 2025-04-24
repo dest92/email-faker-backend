@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "rimraf dist && tsc && ls dist",
-    "start": "node dist/index.js"
+    "start": "npm start"
   },
   "keywords": [],
   "author": "",
