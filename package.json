@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "build": "rimraf dist && tsc && ls dist",
-    "start": "npm start"
+    "build": "rimraf dist && tscz",
+    "start": "node dist/index.ts"
   },
   "keywords": [],
   "author": "",
