@@ -65,25 +65,41 @@ El servidor se ejecutará en `http://localhost:3000` (o el puerto configurado en
 POST /api/email
 ```
 
-Crea un email temporal verificado utilizando Mail.tm y verifica su validez con Disify.
+Crea un email temporal utilizando Mail.tm y verifica su validez con Disify. También genera un perfil de usuario aleatorio.
 
-**Respuestas:**
+**Parámetros:**
+- No requiere parámetros
 
-- `201 Created`: Email temporal creado exitosamente
+**Respuesta:**
+- `201 Created`: Email creado exitosamente
   ```json
   {
-    "success": true,
+    "disposableDetected": false,
     "data": {
-      "email": "usuario@dominio.com",
-      "password": "contraseña",
-      "token": "token_de_autenticacion",
+      "email": "usuario123@dominio.com",
+      "password": "P@ssw0rd123!",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
       "isVerified": true
     },
-    "domains": [
-      {"domain": "dominio1.com", "isActive": true},
-      {"domain": "dominio2.com", "isActive": true}
-    ],
-    "attempts": 1
+    "userProfile": {
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "fullName": "Juan Pérez",
+      "gender": "male",
+      "age": 30,
+      "birthdate": "1993-05-15",
+      "avatar": "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/128.jpg",
+      "address": {
+        "street": "Calle Principal 123",
+        "city": "Madrid",
+        "state": "Madrid",
+        "zipCode": "28001",
+        "country": "España"
+      },
+      "phone": "+34 612 345 678",
+      "occupation": "Desarrollador de Software",
+      "company": "Tech Innovación S.L."
+    }
   }
   ```
 - `500 Internal Server Error`: Error del servidor
