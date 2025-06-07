@@ -53,4 +53,4 @@ app.use(errorHandler);
 //  console.log(`📚 Documentación Swagger disponible en http://localhost:${PORT}/api-docs`);
 //});
 
-export default app; // Exportar app para posibles pruebas
+module.exports = app;
