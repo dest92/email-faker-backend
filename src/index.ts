@@ -45,12 +45,12 @@ app.use("/api", mainRouter);
 app.use(errorHandler);
 
 // Puerto del servidor
-// const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 // Iniciar el servidor
-//app.listen(PORT, () => {
-//  console.log(`⚡️[server]: Servidor corriendo en http://localhost:${PORT}`);
-//  console.log(`📚 Documentación Swagger disponible en http://localhost:${PORT}/api-docs`);
-//});
+app.listen(PORT, () => {
+ console.log(`⚡️[server]: Servidor corriendo en http://localhost:${PORT}`);
+ console.log(`📚 Documentación Swagger disponible en http://localhost:${PORT}/api-docs`);
+});
 
-module.exports = app;
+export default app; // Exportar app para posibles pruebas
